@@ -1,0 +1,47 @@
+/* Actual HTML tags */
+
+*{
+    font-family: sans-serif;
+    color: rgb(105, 105, 105);
+    font-size: 20px;
+    border: 0px;
+    padding:0px
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-container{
+    margin: 5%;
+    width: 80%;
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+.current {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #B8E2F2;
+    box-shadow: 1px 1px 5px 1px #98b8c29d;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    grid-template-rows: 50% 50%;
+    align-items: center;
+    padding-left: 10%;
+    padding-right: 5%;
+}
+
+.controls{
+    margin-right: 5%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 80%;
+    box-shadow: 1px 1px 5px 1px #7277763a;
+}

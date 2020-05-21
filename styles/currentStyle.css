@@ -1,0 +1,95 @@
+/* Current Class Styles */
+
+.date {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction:row;
+    justify-content: space-around;
+}
+
+.temp {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+
+.weather{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.weather p {
+    margin-left: 6%;
+    margin-right: 6%;
+}
+
+.temp p {
+    margin-top: 12%;
+    margin-left: 10%;
+    font-size: 160%;
+}
+
+.icon {
+   height: 40%;
+   width: 40%;
+   margin: 6%;
+}
+
+.maxTemp{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.max-min{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.max-min p {
+    margin-bottom: 0px;
+    margin-left: 7%;
+    margin-right: 7%;
+}
+.max-min-arrows {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0px;
+    margin-left: 7%;
+    margin-right: 7%;
+    padding-bottom: 8%;
+}
+
+.max-min-arrows p {
+    margin-top: 30%;
+}
+
+.fa-arrow-up{
+    color: rgb(88, 119, 131);
+    height: 30%;
+}
+
+.fa-arrow-down{
+    color: rgb(88, 119, 131);
+    height: 30%;
+}
+
+#time{
+    font-weight: normal;
+    align-self: start;
+    font-size: 50px;
+    background-color: #bbf7ef;
+    margin-left: 20px;
+    border-radius: 30px;
+    margin-left: 50%;
+    width: 40%;
+    font-size: 200px;
+}

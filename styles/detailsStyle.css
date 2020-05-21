@@ -1,0 +1,25 @@
+/* Details class style */
+
+.detail{
+    height: 100%;
+    width: 100%;
+    padding: 10%;
+}
+
+.detail p {
+    margin-bottom: auto;
+}
+
+.details img {
+    width: 80%;
+    height: 80%;
+}
+
+.details-images {
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+.details p{
+    font-size: 100%;
+}
