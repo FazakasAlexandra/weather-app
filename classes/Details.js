@@ -69,12 +69,33 @@ class Details {
     }
 
     renderDaily() {
-        let daysTagsArr = this.days.map((day) =>`<div class="daily"><div><p>${day}</p></div></div>`)
-        let daysTagsStr = daysTagsArr.join(" ")
-        console.log(this.controls)
+        console.log(this.days)
+        let days = []
+
+        for(let i = 0; i<this.days.length; i++){
+            let container = document.createElement('div')
+            container.setAttribute('class', 'daily')
+            let day = this.createDay(this.days[i])
+            container.appendChild(day)
+            days.push(container)
+        }
+
         this.controls.style.gridTemplateRows = '33.3% 33.3% 33.3%'
         this.controls.id = 'details-clicked'
-        this.controls.innerHTML = daysTagsStr
+        console.log(this.controls)
+        days.forEach((day) => this.controls.appendChild(day))
+    }
+
+    createDay(date){
+        let p = document.createElement('p')
+        p.innerText = date
+        p.addEventListener('click', ()=>{
+            //changeCurrent()
+            //changeDetails()
+            console.log('hi')
+        })
+
+        return p
     }
 
     renderHourly(){

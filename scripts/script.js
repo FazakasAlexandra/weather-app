@@ -30,10 +30,7 @@ function getWether(lat, lon) {
             let currentWeather = getCurrentWeather(response)
             let detailsWeather = getDetailWeather(response)
             let detailsDays = getWeekDays(response)
-            console.log(currentContainer)
 
-            //let details = new Details(controls, detailsDays, detailsWeather )
-            //details.renderCurrentDetails()
             let current = new Current(currentContainer, currentWeather)
             current.render()
             let navigation = new Navigation(controls, currentContainer, detailsContainer, detailsDays, detailsWeather, currentWeather )  

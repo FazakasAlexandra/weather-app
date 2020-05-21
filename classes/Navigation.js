@@ -6,9 +6,6 @@ class Navigation {
         this.controls = controls
         this.currentContainer = currentContainer
         this.detailsContainer = detailsContainer
-        //console.log(this.detailsContainer)
-        //console.log(detailsDays)
-        //console.log(detailsWeather)
         this.details = new Details(this.detailsContainer, detailsDays, detailsWeather)
         this.current = new Current(currentWeather)
     }
@@ -61,8 +58,6 @@ class Navigation {
 
 
     changeSection(li) {
-        console.log(li)
-        console.log(li.firstChild)
         let span = li.firstChild
 
         switch (span.id) {
@@ -95,8 +90,6 @@ class Navigation {
     }
 
     markSection(li) {
-        console.log(li)
-
         if (!document.getElementById('clicked')) {
             li.style.boxShadow = '1px 1px 3px 1px #98b8c29d'
             li.setAttribute('id', `clicked`)
