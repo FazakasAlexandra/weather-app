@@ -1,6 +1,6 @@
 /* Details class style */
 
-.detail{
+.detail {
     height: 100%;
     width: 100%;
     padding: 10%;
@@ -9,6 +9,15 @@
 .detail p {
     margin-bottom: auto;
 }
+.details{
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    grid-template-rows: 50% 50%;
+    grid-gap: 3%;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 7%;
+}
 
 .details img {
     width: 80%;
@@ -16,10 +25,22 @@
 }
 
 .details-images {
+    margin-top: 7%;
     display: grid;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 30% 70%;
 }
 
 .details p{
     font-size: 100%;
+}
+
+.day{
+    text-align: center;
+}
+.day p{
+    margin-top: 0px;
+    color:rgb(168, 167, 167)
+}
+.day:hover{
+    cursor: pointer;
 }

@@ -2,11 +2,11 @@ import { Details } from "./Details.js"
 import { Current } from "./Current.js"
 
 class Navigation {
-    constructor(controls, currentContainer, detailsContainer, detailsDays, detailsWeather, currentWeather) {
+    constructor(controls, currentContainer, detailsContainer, detailsDays, detailsWeather, currentWeather, daily) {
         this.controls = controls
         this.currentContainer = currentContainer
         this.detailsContainer = detailsContainer
-        this.details = new Details(this.detailsContainer, detailsDays, detailsWeather)
+        this.details = new Details(this.detailsContainer, detailsDays, detailsWeather, daily)
         this.current = new Current(currentWeather)
     }
 
@@ -31,7 +31,6 @@ class Navigation {
         let lis = []
 
         for (let i = 0; i < ListItemsNr; i++) {
-            console.log(spanText[i])
             lis[i] = this.createLi(spanText[i], i)
         }
 
@@ -59,31 +58,31 @@ class Navigation {
 
     changeSection(li) {
         let span = li.firstChild
+        let { controls } = this.details
+        console.log(this.details)
 
         switch (span.id) {
             case 'Current':
-                if(this.details.controls.id === 'details-clicked') {
-                    console.log('inside current')
-                    this.details.controls.style.gridTemplateRows = '50% 50%'
-                    this.details.controls.innerHTML = ""
+                if(controls.id === 'daily-clicked' || document.querySelector('#day-clicked')) {
+                // case daily section was clicked on and we click now back on current, go back to two rows
+                // case current data was changed due to click on one day of daily
+                    controls.style.gridTemplateRows = '50% 50%'
+                    controls.innerHTML = ""
                     this.details.renderCurrent()
                 } else {
-                    this.details.controls.id = 'details'
-                    console.log(document.querySelector('#details'))
-                    this.details.controls.innerHTML = ""
+                    controls.id = 'details'
+                    controls.innerHTML = ""
                     this.details.renderCurrent()
                 }
             break
 
             case 'Daily':
-                console.log('inside daily')
-                this.details.controls.innerHTML = ""
+                controls.innerHTML = ""
                 this.details.renderDaily()
             break
 
             case 'Hourly':
-                console.log('inside hourly')
-                this.details.controls.innerHTML = ""
+                controls.innerHTML = ""
                 this.details.renderHourly()
             break
         }

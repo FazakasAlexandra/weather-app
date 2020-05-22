@@ -29,17 +29,9 @@ body{
     box-shadow: 1px 1px 5px 1px #98b8c29d;
 }
 
-.details {
-    display: grid;
-    grid-template-columns: 33.3% 33.3% 33.3%;
-    grid-template-rows: 50% 50%;
-    align-items: center;
-    padding-left: 10%;
-    padding-right: 5%;
-}
-
 .controls{
     margin-right: 5%;
+    padding: 3%;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 20% 80%;

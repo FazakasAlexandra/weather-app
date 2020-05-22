@@ -1,13 +1,11 @@
 class Current{
     constructor(currentContainer, weather){
         this.currentContainer = currentContainer
-        console.log(currentContainer)
         this.weather = weather
     }
 
     render(){
         let dateSection = this.createDateSection()
-        console.log(dateSection)
         let tempSection = this.createTempSection()
         let weatherSection = this.createWeatherSection()
         let maxTempSection = this.createMaxTempSection()
@@ -19,18 +17,18 @@ class Current{
 
     createDateSection(){
         let container = document.createElement('div') 
-        container.setAttribute('class', 'date')
-        let dateSection = `<p>${this.weather.day} </p>
-                           <p>${this.weather.hour} </p>`
+        container.setAttribute('id', 'date')
+        let dateSection = `<p id = "month-day">${this.weather.day} </p>
+                           <p id = "hour">${this.weather.hour} </p>`
         container.innerHTML = dateSection
         return container
     }
 
     createTempSection(){
         let container = document.createElement('div')
-        container.setAttribute('class', 'temp')
+        container.setAttribute('id', 'temp')
         let imgClass = 'class = "icon"'
-        let tempSection = `<p>${this.weather.temp}°C </p>
+        let tempSection = `<p id = "day-temp">${this.weather.temp}°C </p>
                            <img src="https://image.flaticon.com/icons/svg/2938/2938075.svg"${imgClass}>`
         container.innerHTML = tempSection
 
@@ -40,9 +38,9 @@ class Current{
 
     createWeatherSection() {
         let container = document.createElement('div')
-        container.setAttribute('class', 'weather')
-        let weatherSection = `<p>${this.weather.main}</p>
-                              <p>${this.weather.description}</p>`
+        container.setAttribute('id', 'weather')
+        let weatherSection = `<p id = "main">${this.weather.main}</p>
+                              <p id = "description">${this.weather.description}</p>`
         container.innerHTML = weatherSection
         
         return container
@@ -50,14 +48,20 @@ class Current{
 
     createMaxTempSection() {
         let container = document.createElement('div')
-        container.setAttribute('class', 'maxTemp')
+        container.setAttribute('id', 'maxTemp')
         let maxTempSection = `<div class = "max-min">
-                                <p>Max</p>
-                                <p>Min</p>
+                                <p> Max </p>
+                                <p> Min </p>
                               </div>
                               <div class = "max-min">
-                                <div class = "max-min-arrows"><i class="fas fa-arrow-up"></i><p>${this.weather.max}</p></div>
-                                <div class = "max-min-arrows"><i class="fas fa-arrow-down"></i><p>${this.weather.min}</p></div>
+                                <div class = "max-min-arrows">
+                                   <i class ="fas fa-arrow-up"></i>
+                                   <p id ="max-temperature">${this.weather.max}°C </p>
+                                </div>
+                                <div class = "max-min-arrows">
+                                   <i class ="fas fa-arrow-down"></i>
+                                   <p id = "min-temperature"> ${this.weather.min}°C </p>
+                                </div>
                               </div>`
         container.innerHTML = maxTempSection
 
