@@ -32,11 +32,11 @@ function getWether(lat, lon) {
             let weekDays = getWeekDays(response)
             let daily = getDailyWeather(response)
      
-            let current = new Current(currentContainer, currentWeather)
+            let current = new Current(currentWeather, currentContainer)
             current.render()
             let navigation = new Navigation(controls, currentContainer, detailsContainer, weekDays, detailsWeather, currentWeather, daily )  
             navigation.createNavBar()  
-            navigation.details.renderCurrent()     
+            navigation.details.renderCurrentDetails()     
         })
 }
 

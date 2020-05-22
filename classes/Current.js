@@ -1,7 +1,7 @@
 class Current{
-    constructor(currentContainer, weather){
-        this.currentContainer = currentContainer
+    constructor(weather, currentContainer){
         this.weather = weather
+        this.currentContainer = currentContainer
     }
 
     render(){

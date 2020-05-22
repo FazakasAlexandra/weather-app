@@ -4,10 +4,11 @@ import { Current } from "./Current.js"
 class Navigation {
     constructor(controls, currentContainer, detailsContainer, detailsDays, detailsWeather, currentWeather, daily) {
         this.controls = controls
+        console.log(controls)
         this.currentContainer = currentContainer
         this.detailsContainer = detailsContainer
         this.details = new Details(this.detailsContainer, detailsDays, detailsWeather, daily)
-        this.current = new Current(currentWeather)
+        this.current = new Current(currentWeather, null)
     }
 
     createNavBar() {
@@ -60,25 +61,26 @@ class Navigation {
         let span = li.firstChild
         let { controls } = this.details
         console.log(this.details)
+        let isCurrentChanged = document.querySelector('#day-clicked') ? true : false
 
         switch (span.id) {
             case 'Current':
-                if(controls.id === 'daily-clicked' || document.querySelector('#day-clicked')) {
+                if(controls.id === 'daily-clicked') {
                 // case daily section was clicked on and we click now back on current, go back to two rows
                 // case current data was changed due to click on one day of daily
                     controls.style.gridTemplateRows = '50% 50%'
                     controls.innerHTML = ""
-                    this.details.renderCurrent()
+                    this.details.renderCurrentDetails(isCurrentChanged, this.current)
                 } else {
                     controls.id = 'details'
                     controls.innerHTML = ""
-                    this.details.renderCurrent()
+                    this.details.renderCurrentDetails()
                 }
             break
 
             case 'Daily':
                 controls.innerHTML = ""
-                this.details.renderDaily()
+                this.details.renderDays()
             break
 
             case 'Hourly':
