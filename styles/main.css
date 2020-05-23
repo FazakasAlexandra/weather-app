@@ -10,30 +10,41 @@
 
 body{
     display: flex;
-    flex-direction: column;
     justify-content: center;
 }
 
 .main-container{
-    margin: 5%;
+    margin-top: 5%;
+    width: 70%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.day-detail-img {
     width: 80%;
-    display: grid;
-    grid-template-columns: 40% 60%;
+    height: 80%;
 }
 
-.current {
-    display: flex;
-    flex-direction: column;
+.day-details {
+    display: grid;
+    grid-template-rows: 33.3% 33.3% 33.3%;
+    grid-template-columns: 50% 50%;
     align-items: center;
-    background-color: #B8E2F2;
-    box-shadow: 1px 1px 5px 1px #98b8c29d;
+    padding: 5%;
+    grid-gap: 2%;
+    padding-left: 15%;
+    box-shadow: 1px 1px 5px 1px #7277763a;
 }
 
-.controls{
-    margin-right: 5%;
-    padding: 3%;
+.day-detail{
     display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 20% 80%;
-    box-shadow: 1px 1px 5px 1px #7277763a;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
+    align-items: center;
+    
+}
+
+.day-detail-title{
+    margin-bottom: auto;
+    margin-top: auto;
 }

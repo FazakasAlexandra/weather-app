@@ -42,7 +42,7 @@ function getWether(lat, lon) {
 
 function getCurrentTemperature(response) {
     let { dt, temp } = response.current
-    let { description, main } = response.current.weather[0]
+    let { icon, description, main } = response.current.weather[0]
     let { max, min } = response.daily[0].temp
     max = convertKelvin(Math.round(max))
     min = convertKelvin(Math.round(min))
@@ -57,14 +57,14 @@ function getCurrentTemperature(response) {
         temp: cTemp,
         max,
         min,
-        main
+        main,
+        icon
     }
     
     return currentWeather
 }
 
 function getCurrentDetails(response) {
-    console.log(response)
     let { sunrise, sunset, wind_speed, uvi, clouds, humidity } = response.current
     sunrise = convertDate(sunrise)
     sunset = convertDate(sunset)
@@ -86,6 +86,7 @@ function getDailyWeather(response){
     let temperature = []
     let weekDays = getWeekDays(response)
     let daily = response.daily
+    // remove current day
     daily.shift();
 
     for (let i = 0; i < daily.length; i++){
@@ -98,11 +99,12 @@ function getDailyWeather(response){
             wind_speed,
             uvi,
             clouds,
-            humidity
+            humidity,
+            icons : getIcons()
         }
 
         let { day, max, min } = response.daily[i].temp
-        let { main, description } = response.daily[i].weather[0]
+        let { icon, main, description } = response.daily[i].weather[0]
 
         let dayTemperature = {
             id: weekDays[i],
@@ -111,14 +113,48 @@ function getDailyWeather(response){
             max : convertKelvin(Math.round(max)),
             min : convertKelvin(Math.round(min)),
             main,
-            description
+            description,
+            icon
         }
 
+        console.log(dayDetail)
         details.push(dayDetail)
+
         temperature.push(dayTemperature)
     }
 
     console.log({details, temperature})
 
     return {details, temperature} 
+}
+
+function getIcons(){
+    let iconsList = [
+        {
+            name: 'Sunrise',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315683.svg"
+        },
+        {
+            name: 'Sunset',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315684.svg"
+        },
+        {
+            name: 'Wind Speed',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315688.svg"
+        },
+        {
+            name: 'uvi',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315679.svg"
+        },
+        {
+            name: 'Clouds',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315653.svg"
+        },
+        {
+            name: 'Humidity',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315656.svg"
+        }
+    ]
+
+    return iconsList;
 }

@@ -9,7 +9,8 @@
 .detail p {
     margin-bottom: auto;
 }
-.details{
+
+.details {
     display: grid;
     grid-template-columns: 33.3% 33.3% 33.3%;
     grid-template-rows: 50% 50%;
@@ -20,8 +21,8 @@
 }
 
 .details img {
-    width: 80%;
-    height: 80%;
+    width: 93%;
+    height: 93%;
 }
 
 .details-images {
@@ -30,17 +31,19 @@
     grid-template-columns: 30% 70%;
 }
 
-.details p{
+.details p {
     font-size: 100%;
 }
 
-.day{
+.day {
     text-align: center;
 }
-.day p{
+
+.day p {
     margin-top: 0px;
-    color:rgb(168, 167, 167)
+    color: rgb(168, 167, 167)
 }
-.day:hover{
+
+.day:hover {
     cursor: pointer;
 }

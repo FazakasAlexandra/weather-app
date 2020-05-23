@@ -4,7 +4,6 @@ import { Current } from "./Current.js"
 class Navigation {
     constructor(controls, currentContainer, detailsContainer, detailsDays, detailsWeather, currentWeather, daily) {
         this.controls = controls
-        console.log(controls)
         this.currentContainer = currentContainer
         this.detailsContainer = detailsContainer
         this.details = new Details(this.detailsContainer, detailsDays, detailsWeather, daily)
@@ -70,12 +69,18 @@ class Navigation {
                 // case current data was changed due to click on one day of daily
                     controls.style.gridTemplateRows = '50% 50%'
                     controls.innerHTML = ""
-                    this.details.renderCurrentDetails(isCurrentChanged, this.current)
+                    this.details.renderCurrentDetails(isCurrentChanged, this.current) 
                 } else {
                     controls.id = 'details'
                     controls.innerHTML = ""
                     this.details.renderCurrentDetails()
                 }
+
+                if(document.querySelector('#day-detail-clicked')){
+                    document.querySelector('#day-detail-clicked').remove()
+                    document.querySelector('.main-container').style.gridTemplateColumns = '50% 50%'
+                }
+                
             break
 
             case 'Daily':
