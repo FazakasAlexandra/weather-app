@@ -35,15 +35,26 @@
     font-size: 100%;
 }
 
-.day {
+.day, .hour {
     text-align: center;
 }
 
-.day p {
+.day p, .hour p, .hour-with-arrow p {
     margin-top: 0px;
     color: rgb(168, 167, 167)
 }
 
-.day:hover {
+.day:hover, .hour:hover {
+    cursor: pointer;
+}
+
+.details .arrow img {
+    width: 40%;
+    height: 40%;
+    margin-bottom: 25%;
+    margin-left: 30%;
+}
+
+.details .arrow img:hover{
     cursor: pointer;
 }

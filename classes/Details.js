@@ -1,5 +1,5 @@
 class Details {
-    constructor(controls, days, weather, daily) {
+    constructor(controls, days, weather, daily, hourly) {
         this.controls = controls
         this.days = days
         this.details = [
@@ -37,19 +37,21 @@ class Details {
             }
         ]
         this.daily = daily
+        this.hourly = hourly
+        console.log('hourly: ', hourly)
+        console.log('controls: ', controls)
     }
 
     renderCurrentDetails(isCurrentChanged, currentObject) {
         if (isCurrentChanged) {
-            this.rendercurrentDetails()
+            this.renderDetails()
             this.changeCurrentBack(currentObject)
-
         } else {
-            this.rendercurrentDetails()
+            this.renderDetails()
         }
     }
 
-    rendercurrentDetails() {
+    renderDetails() {
         let { details } = this
 
         for (let i = 0; i < details.length; i++) {
@@ -101,6 +103,7 @@ class Details {
         let p = document.createElement('p')
         p.innerText = date
         p.addEventListener('click', (event) => {
+            document.querySelector('.main-container').style.paddingRight = '8%'
             this.dayEvent(event)
         })
 
@@ -140,7 +143,7 @@ class Details {
 
         document.querySelector('#hour').style.display = 'none'
 
-        this.changeCurrentContainer(icon, max, min, dayTemp, main, description)
+        this.changeCurrentContainer('day', icon, max, min, dayTemp, main, description)
     }
 
     changeCurrentBack(currentObject) {
@@ -151,10 +154,25 @@ class Details {
         month.innerHTML = day
         currentHour.innerHTML = hour
 
-        this.changeCurrentContainer(icon, max, min, temp, main, description)
+        this.changeCurrentContainer(null, icon, max, min, temp, main, description)
     }
 
-    changeCurrentContainer(icon, max, min, dayTemp, main, description) {
+    changeCurrentContainer(type, icon, max, min, dayTemp, main, description) {
+        if (type === 'hour') {
+            this.changeCurrentForHour(dayTemp, main, description, icon)
+        } else {
+            this.changeCurrentForDay(icon, max, min, dayTemp, main, description)
+        }
+    }
+
+    changeCurrentForHour(dayTemp, main, description, icon){
+        document.querySelector('#day-temp').innerHTML = `${dayTemp}°C `
+        document.querySelector('#main').innerHTML = main
+        document.querySelector('#description').innerHTML = description
+        document.querySelector('#icon').src = `http://openweathermap.org/img/wn/${icon}@2x.png`
+    }
+
+    changeCurrentForDay(icon, max, min, dayTemp, main, description){
         document.querySelector('#max-temperature').innerHTML = `${max}°C`
         document.querySelector('#min-temperature').innerHTML = `${min}°C`
         document.querySelector('#day-temp').innerHTML = `${dayTemp}°C `
@@ -167,8 +185,10 @@ class Details {
         //data that has to be rendered inside the day-detail-container(s)
         let dayDetailsContainers = []
 
+        console.log(dayNumber)
+
         for (let i = 0; i < 6; i++) {
-            let container = this.makeContainer(i, dayNumber)
+            let container = this.createDayDetail(i, dayNumber)
             dayDetailsContainers.push(container)
         }
 
@@ -178,10 +198,19 @@ class Details {
             document.querySelector('#day-detail-clicked').remove()
             this.renderDayDetail(main, dayDetailsContainers)
 
+        } else if (document.querySelector('#hour-details-clicked')) {
+            document.querySelector('#hour-details-clicked').remove()
+            this.renderDayDetail(main, dayDetailsContainers)
         } else {
             this.renderDayDetail(main, dayDetailsContainers)
         }
 
+    }
+
+    createDayDetail(i, dayNumber){
+        let iconData = this.daily.details[dayNumber].icons[i]
+        let container = this.createDetailContainer('day', iconData, dayNumber)
+        return container
     }
 
     renderDayDetail(container, childrens) {
@@ -192,21 +221,6 @@ class Details {
         dayDetails.innerHTML = stringDOM
         container.appendChild(dayDetails)
         container.style.gridTemplateColumns = '30% 50% 30%'
-    }
-
-    makeContainer(i, dayNumber) {
-        let iconData = this.daily.details[dayNumber].icons[i]
-        console.warn(icon)
-        let data = this.changeData(iconData.name, dayNumber)
-
-        let container = `<div class = "day-detail-container">
-                           <p class = "day-detail-title">${iconData.name}</p>
-                           <div class = "day-detail">
-                             <img src = ${iconData.icon} class="day-detail-img">
-                             <p class ="day-detail-data">${data}</p>
-                           </div>
-                         </div>`
-        return container
     }
 
     changeData(iconName, dayNumber) {
@@ -242,6 +256,152 @@ class Details {
         }
 
         return data;
+    }
+
+    renderHours() {
+        console.log(this.controls)
+        this.fixView()
+        let hours = []
+
+        for (let i = 0; i < this.hourly.temperature.length; i++) {
+            // only 9 grid cells available for only 9 hours
+            // at the 9th grid cell , add arrow for next section
+            if (i === 8) {
+                // problem with last one
+                let container = document.createElement('div')
+                container.setAttribute('class', 'arrow')
+                let arrow = this.createArrow(i)
+                container.appendChild(arrow)
+                hours.push(container)
+
+            } else if (i > 8) {
+                break
+
+            } else {
+                let container = document.createElement('div')
+                container.setAttribute('class', 'hour')
+                let hour = this.createHour(this.hourly.temperature[i])
+                container.appendChild(hour)
+                hours.push(container)
+            }
+        }
+        this.controls.style.gridTemplateRows = '33.3% 33.3% 33.3%'
+        this.controls.id = 'hourly-clicked'
+        hours.forEach((hour) => this.controls.appendChild(hour))
+
+    }
+
+    createArrow(i) {
+        let img = document.createElement('img')
+        img.setAttribute('class', 'arrow')
+        img.setAttribute('src', 'https://image.flaticon.com/icons/png/512/875/875564.png')
+        img.addEventListener('click', () => console.log(i))
+        return img
+    }
+
+    createHour(hour) {
+        console.log(hour)
+        let p = document.createElement('p')
+        p.innerText = hour.id
+        p.addEventListener('click', (event) => {
+            // adjust view for hourly detail section
+            document.querySelector('.main-container').style.paddingRight = '8%'
+            this.hourEvent(event)
+        })
+
+        return p
+    }
+
+
+    hourEvent(event) {
+        for (let i = 0; i < this.hourly.details.length; i++) {
+            if (this.hourly.details[i].id === event.target.innerHTML) {
+                this.markHour(event.target)
+                this.changeCurrentByHour(i)
+                this.createHourDetails(i)
+                //this.check(this.hourly.details[i].id)
+            }
+        }
+    }
+
+    markHour(p) {
+        console.log(p)
+        if (document.querySelector('#hour-clicked')) {
+            document.querySelector('#hour-clicked').style.color = 'rgb(168, 167, 167)'
+            document.querySelector('#hour-clicked').removeAttribute('id')
+            p.style.color = "rgb(105, 105, 105)"
+            p.id = 'hour-clicked'
+
+        } else {
+            p.style.color = "rgb(105, 105, 105)"
+            p.id = 'hour-clicked'
+        }
+    }
+
+    changeCurrentByHour(i) {
+        let { icon, main, description, hourTemp, hour } = this.hourly.temperature[i]
+        document.querySelector('#hour').innerHTML = hour
+
+        this.changeCurrentContainer('hour', icon, null, null, hourTemp, main, description)
+    }
+
+    createHourDetails(hourNumber, i) {
+        console.log(this.hourly.details[i])
+        let hourDetailsContainers = []
+
+        for (let i = 0; i < 3; i++) {
+            // 3 details to render -> 3 containers, each contains one detail
+            let container = this.createHourDetail(i, hourNumber)
+            hourDetailsContainers.push(container)
+        }
+
+        let main = document.querySelector(".main-container")
+        if (document.querySelector('#hour-details-clicked')) {
+            document.querySelector('#hour-details-clicked').remove()
+            this.renderHourDetails(main, hourDetailsContainers)
+        } else {
+            this.renderHourDetails(main, hourDetailsContainers)
+        }
+
+
+    }
+
+    createHourDetail(i, hourNumber) {
+        let iconData = this.hourly.details[hourNumber].icons[i]
+        let container = this.createDetailContainer('hour', iconData, hourNumber)
+        return container
+    }
+
+    createDetailContainer(detailType, iconData, number) {
+        //use it for daily details too
+        let data = this.changeData(iconData.name, number)
+
+        let container = `<div class = "${detailType}-detail-container">
+                           <p class = "${detailType}-detail-title">${iconData.name}</p>
+                           <div class = "${detailType}-detail">
+                             <img src = ${iconData.icon} class = "${detailType}-detail-img">
+                             <p class = "${detailType}-detail-data">${data}</p>
+                           </div>
+                         </div>`
+        return container
+    }
+
+    renderHourDetails(container, childrens) {
+        // use it for daily details too
+        let hourDetails = document.createElement('div')
+        hourDetails.setAttribute('class', 'hour-details')
+        hourDetails.id = 'hour-details-clicked'
+        let stringDOM = childrens.join(" ")
+        hourDetails.innerHTML = stringDOM
+        container.appendChild(hourDetails)
+        container.style.gridTemplateColumns = '35% 50% 25%'
+
+    }
+
+    fixView() {
+        let main = document.querySelector('.main-container')
+        main.style.paddingRight = '0px'
+        main.style.gridTemplateColumns = '50% 50%'
     }
 }
 

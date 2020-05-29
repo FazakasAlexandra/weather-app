@@ -31,12 +31,23 @@ function getWether(lat, lon) {
             let detailsWeather = getCurrentDetails(response)
             let weekDays = getWeekDays(response)
             let daily = getDailyWeather(response)
-     
+            let hourly = getHourlyWeather(response)
+
             let current = new Current(currentWeather, currentContainer)
             current.render()
-            let navigation = new Navigation(controls, currentContainer, detailsContainer, weekDays, detailsWeather, currentWeather, daily )  
-            navigation.createNavBar()  
-            navigation.details.renderCurrentDetails()     
+
+            let navigation = new Navigation(
+                controls, 
+                currentContainer, 
+                detailsContainer, 
+                weekDays, 
+                detailsWeather, 
+                currentWeather, 
+                daily, 
+                hourly
+            )
+            navigation.createNavBar()
+            navigation.details.renderCurrentDetails()
         })
 }
 
@@ -60,7 +71,7 @@ function getCurrentTemperature(response) {
         main,
         icon
     }
-    
+
     return currentWeather
 }
 
@@ -81,7 +92,7 @@ function getCurrentDetails(response) {
     return detailsWeather
 }
 
-function getDailyWeather(response){
+function getDailyWeather(response) {
     let details = []
     let temperature = []
     let weekDays = getWeekDays(response)
@@ -89,18 +100,18 @@ function getDailyWeather(response){
     // remove current day
     daily.shift();
 
-    for (let i = 0; i < daily.length; i++){
+    for (let i = 0; i < daily.length; i++) {
         let { sunrise, sunset, wind_speed, uvi, clouds, humidity } = daily[i]
 
         let dayDetail = {
             id: weekDays[i],
-            sunrise : convertDate(sunrise).hour,
-            sunset : convertDate(sunset).hour,
+            sunrise: convertDate(sunrise).hour,
+            sunset: convertDate(sunset).hour,
             wind_speed,
             uvi,
             clouds,
             humidity,
-            icons : getIcons()
+            icons: getIcons()
         }
 
         let { day, max, min } = response.daily[i].temp
@@ -108,28 +119,68 @@ function getDailyWeather(response){
 
         let dayTemperature = {
             id: weekDays[i],
-            date : convertDate(sunrise).day,
-            dayTemp : convertKelvin(Math.round(day)),
-            max : convertKelvin(Math.round(max)),
-            min : convertKelvin(Math.round(min)),
+            date: convertDate(sunrise).day,
+            dayTemp: convertKelvin(Math.round(day)),
+            max: convertKelvin(Math.round(max)),
+            min: convertKelvin(Math.round(min)),
             main,
             description,
             icon
         }
 
-        console.log(dayDetail)
         details.push(dayDetail)
-
         temperature.push(dayTemperature)
     }
 
-    console.log({details, temperature})
-
-    return {details, temperature} 
+    return { details, temperature }
 }
 
-function getIcons(){
-    let iconsList = [
+function getHourlyWeather(response){
+    let hourlyData = getTodayHourlyData(response)
+    let details = []
+    let temperature = []
+
+    for (let i = 0; i < hourlyData.length; i++){
+    let { hour, temp, wind_speed, clouds, humidity } = hourlyData[i]
+    let { icon, main, description } = hourlyData[i].weather[0]
+
+    let hourlyDetail = {id: hour, wind_speed, clouds, humidity, icons: getIcons('hourly')}
+
+    let hourlyTemperature = {
+        id: hour, 
+        hour, 
+        hourTemp : convertKelvin(Math.round(temp)), 
+        icon, 
+        main, 
+        description
+    }
+
+    details.push(hourlyDetail)
+    temperature.push(hourlyTemperature)
+
+    }
+
+    return {details, temperature}
+}
+
+function getIcons(type) {
+
+    let hourlyIconsList = [
+        {
+            name: 'Wind Speed',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315688.svg"
+        },
+        {
+            name: 'Clouds',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315653.svg"
+        },
+        {
+            name: 'Humidity',
+            icon: "https://image.flaticon.com/icons/svg/1315/1315656.svg"
+        }
+    ]
+
+    let dailyIconsList = [
         {
             name: 'Sunrise',
             icon: "https://image.flaticon.com/icons/svg/1315/1315683.svg"
@@ -155,6 +206,8 @@ function getIcons(){
             icon: "https://image.flaticon.com/icons/svg/1315/1315656.svg"
         }
     ]
+
+    let iconsList = type === 'hourly' ? hourlyIconsList : dailyIconsList
 
     return iconsList;
 }
