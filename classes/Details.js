@@ -165,14 +165,14 @@ class Details {
         }
     }
 
-    changeCurrentForHour(dayTemp, main, description, icon){
+    changeCurrentForHour(dayTemp, main, description, icon) {
         document.querySelector('#day-temp').innerHTML = `${dayTemp}°C `
         document.querySelector('#main').innerHTML = main
         document.querySelector('#description').innerHTML = description
         document.querySelector('#icon').src = `http://openweathermap.org/img/wn/${icon}@2x.png`
     }
 
-    changeCurrentForDay(icon, max, min, dayTemp, main, description){
+    changeCurrentForDay(icon, max, min, dayTemp, main, description) {
         document.querySelector('#max-temperature').innerHTML = `${max}°C`
         document.querySelector('#min-temperature').innerHTML = `${min}°C`
         document.querySelector('#day-temp').innerHTML = `${dayTemp}°C `
@@ -207,7 +207,7 @@ class Details {
 
     }
 
-    createDayDetail(i, dayNumber){
+    createDayDetail(i, dayNumber) {
         let iconData = this.daily.details[dayNumber].icons[i]
         let container = this.createDetailContainer('day', iconData, dayNumber)
         return container
@@ -223,11 +223,20 @@ class Details {
         container.style.gridTemplateColumns = '30% 50% 30%'
     }
 
-    changeData(iconName, dayNumber) {
+    getDayDataByIcon(iconName, dayNumber) {
         let { sunrise, sunset, clouds, uvi, humidity, wind_speed } = this.daily.details[dayNumber]
+        let data = this.switchIconName(iconName, sunrise, sunset, clouds, uvi, humidity, wind_speed)
+        return data
+    }
+
+    getHourDataByIcon(iconName, dayNumber) {
+        let {clouds, humidity, wind_speed} = this.hourly.details[dayNumber]
+        let data = this.switchIconName(iconName, null, null, clouds, null, humidity, wind_speed)
+        return data
+    }
+
+    switchIconName(iconName, sunrise, sunset, clouds, uvi, humidity, wind_speed){
         let data = ""
-        console.log(dayNumber)
-        console.log(this.daily.details[dayNumber])
 
         switch (iconName) {
             case 'Sunrise':
@@ -267,10 +276,12 @@ class Details {
             // only 9 grid cells available for only 9 hours
             // at the 9th grid cell , add arrow for next section
             if (i === 8) {
+                console.error('equal 8')
                 // problem with last one
                 let container = document.createElement('div')
                 container.setAttribute('class', 'arrow')
                 let arrow = this.createArrow(i)
+                console.log(arrow)
                 container.appendChild(arrow)
                 hours.push(container)
 
@@ -292,6 +303,7 @@ class Details {
     }
 
     createArrow(i) {
+        console.error('something happened!')
         let img = document.createElement('img')
         img.setAttribute('class', 'arrow')
         img.setAttribute('src', 'https://image.flaticon.com/icons/png/512/875/875564.png')
@@ -373,8 +385,7 @@ class Details {
     }
 
     createDetailContainer(detailType, iconData, number) {
-        //use it for daily details too
-        let data = this.changeData(iconData.name, number)
+        let data = detailType === 'day' ? this.getDayDataByIcon(iconData.name, number) : this.getHourDataByIcon(iconData.name, number)
 
         let container = `<div class = "${detailType}-detail-container">
                            <p class = "${detailType}-detail-title">${iconData.name}</p>
